@@ -17,58 +17,58 @@ const router = express.Router()
 
 
 
-// const mongoURI = "mongodb://localhost:27017/node-file-upl";
-// // mongodb+srv://ridwan:ridwan526@ridwanlock-uqlxu.mongodb.net/test?retryWrites=true&w=majority
-// // connection
-// // mongodb://localhost:27017/node-file-upl
-// const conn = mongoose.createConnection(mongoURI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
+const mongoURI = "mongodb://localhost:27017/node-file-upl";
+// mongodb+srv://ridwan:ridwan526@ridwanlock-uqlxu.mongodb.net/test?retryWrites=true&w=majority
+// connection
+// mongodb://localhost:27017/node-file-upl
+const conn = mongoose.createConnection(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
+var minisave = []
 
+let gfs;
+conn.once("open", () => {
+  // init stream
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: "uploads"
+  });
+});
 
-// let gfs;
-// conn.once("open", () => {
-//   // init stream
-//   gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-//     bucketName: "uploads"
-//   });
-// });
-
-// const storage = new GridFsStorage({
-//     url: mongoURI,
-//     file: (req, file) => {
-//         console.log(file)
-//         console.log(file.fieldname)
-//       return new Promise((resolve, reject) => {
-//         crypto.randomBytes(16, (err, buf) => {
-//           if (err) {
-//             return reject(err);
-//           }
-//           const filename = buf.toString("base64") + path.extname(file.originalname);
-//           localsave.push(buf.toString("base64"))
+const storage = new GridFsStorage({
+    url: mongoURI,
+    file: (req, file) => {
+        console.log(file)
+        console.log(file.fieldname)
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            return reject(err);
+          }
+          const filename = buf.toString("hex") + path.extname(file.originalname);
           
-//           minisave.push(filename)
-//           console.log(minisave[minisave.length-1])
+         // minisave.push(buf.toString("hex"))
+          minisave.push(filename)
+          console.log(minisave[minisave.length-1])
           
           
-//           const fileInfo = {
-//             filename: filename,
-//             bucketName: "uploads"
+          const fileInfo = {
+            filename: filename,
+            bucketName: "uploads"
 
-//           };
-//           resolve(fileInfo);
+          };
+          resolve(fileInfo);
 
 
-//         });
-//       });
-//     }
-//   });
+        });
+      });
+    }
+  });
   
-//   const upload = multer({
-//     storage
-//   });
+  const upload = multer({
+    storage
+  });
 
 let localsave = {
 
@@ -209,7 +209,7 @@ router.post('/complete',(req,res)=>{
         if(accountNumber.len != 10){
             accountNumber = accountNumber.slice(0,10)
         }
-
+        console.log("Good")
 
         var user = new User();
         user.accountNumber = accountNumber
@@ -228,7 +228,7 @@ router.post('/complete',(req,res)=>{
         user.idCard = localsave.idCard
         user.save((err, doc)=>{
             if (!err){
-
+              
              res.send("good")
             
             }
@@ -241,7 +241,7 @@ router.post('/complete',(req,res)=>{
     else{
         res.send("Please fill the necessary information")
     }
-})
+}) 
         
      router.post('/congrat',(req,res)=>{
 
@@ -254,7 +254,7 @@ router.post('/complete',(req,res)=>{
                      auth: {
                        user: 'olaniyi.jibola152@gmail.com',
                        pass: 'ridwan526'
-                     },
+                     }, 
         
                    });
                  
@@ -295,12 +295,62 @@ router.post('/complete',(req,res)=>{
      })  
     })  
 
-        
+    // const storage = multer.diskStorage({
+    //     destination: function(req, file, cb){
+    //         cb(null, 'uploads/')
+    //     },
+    //     filename: function(req, file, cb){
+    //         console.log(file)
+    //         cb(null, file.originalname)
+    //     }
+    // })   
     
- router.post('/passport',(req,res)=>{
-    localsave.passport = req.body.file
- })
+//  router.post('/passport',(req,res)=>{
+//      const upload = multer({storage}).single('file')
+//      upload(req, res, function(err){
+//          if(err){
+//              return res.send(err)
+//          }
+//          console.log("file uploaded to server")
+//          console.log(req.file)
+         
 
+//          const cloudinary = require('cloudinary').v2
+//          cloudinary.config({
+//              cloud_name: 'dcx4utzdx',
+//              api_key: '226791946435464',
+//              api_secret: 'yzsp3pOrvIEzFAhfMfWEIWXQmmA'
+//          })
+//          console.log("welcome to cloudinary")
+//          const path = req.file.path
+//          const uniqueFilename = new Date().toISOString()
+
+//          cloudinary.uploader.upload(
+//              path,
+//              {
+//                  public_id: `blog/${uniqueFilename}`, tags: `blog`
+//              },
+//              function(err, image){
+//                  if(err) return console.log(err)
+//                  console.log("file uploaded to cloudinary")
+
+//                  const fs = require('fs')
+//                  fs.unlinkSync(path)
+//                  console.log(image)
+//                 localsave.passport = image.secure_url
+
+//              }
+//          )
+//      }
+//      )
+
+   
+//  })
+
+router.post("/passport", upload.single("file"), (req,res)=>{
+    localsave.passport = minisave[minisave.length-1]
+    console.log(minisave[minisave.length-1])
+})
  
  router.post('/signature',(req,res)=>{
     localsave.signature = req.body.file

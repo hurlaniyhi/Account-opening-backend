@@ -5,7 +5,7 @@ var userSchema = new mongoose.Schema({
         type: String
     },
     BVN: {
-        type: Number
+        type: String
     },
     DOB: {
         type: String
