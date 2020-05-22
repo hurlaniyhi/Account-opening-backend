@@ -6,7 +6,7 @@ const handler = require('./handlers/controller.js')
 
 
 const app = express()
-var port = process.env.PORT || 3001
+var port = process.env.PORT || 3050
 
 
 app.use(bodyParser.urlencoded({extended: true})) 

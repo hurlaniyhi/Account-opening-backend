@@ -79,6 +79,7 @@ let localsave = {
  })
 
   router.post('/email',(req,res)=>{
+      console.log(req.body.email)
     User.findOne({email: req.body.email},function(err, doc){
         if(!doc){
             localsave.email = req.body.email
