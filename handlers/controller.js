@@ -74,7 +74,9 @@ let localsave = {
 
 }
 
-
+ router.get('/',(req,res)=>{
+     res.send("server is good")
+ })
 
   router.post('/email',(req,res)=>{
     User.findOne({email: req.body.email},function(err, doc){
