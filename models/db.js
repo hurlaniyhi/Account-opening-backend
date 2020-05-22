@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/GTAccountO', {useNewUrlParser: true, useUnifiedTopology: true}, (err)=>{
+mongoose.connect('mongodb://localhost:27017/GTAccount00', {useNewUrlParser: true, useUnifiedTopology: true}, (err)=>{
     //mongodb://localhost:27017/Request
     //mongodb+srv://olaniyi:ridwan152@cluster0-kezbp.mongodb.net/test?retryWrites=true&w=majority
     if(!err){
