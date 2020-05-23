@@ -11,64 +11,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 
 mongoose.set('useFindAndModify', false);
-const User = mongoose.model('User')
+const Account = mongoose.model('Account')
 const router = express.Router()
 
 
-
-
-// const mongoURI = "mongodb://localhost:27017/node-file-upl";
-// // mongodb+srv://ridwan:ridwan526@ridwanlock-uqlxu.mongodb.net/test?retryWrites=true&w=majority
-// // connection
-// // mongodb://localhost:27017/node-file-upl
-// const conn = mongoose.createConnection(mongoURI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
-
 var minisave = []
-
-// let gfs;
-// conn.once("open", () => {
-//   // init stream
-//   gfs = new mongoose.mongo.GridFSBucket(conn.db, {
-//     bucketName: "uploads"
-//   });
-// });
-
-// const storage = new GridFsStorage({
-//     url: mongoURI,
-//     file: (req, file) => {
-//         console.log(file)
-//         console.log(file.fieldname)
-//       return new Promise((resolve, reject) => {
-//         crypto.randomBytes(16, (err, buf) => {
-//           if (err) {
-//             return reject(err);
-//           }
-//           const filename = buf.toString("hex") + path.extname(file.originalname);
-          
-//          // minisave.push(buf.toString("hex"))
-//           minisave.push(filename)
-//           console.log(minisave[minisave.length-1])
-          
-          
-//           const fileInfo = {
-//             filename: filename,
-//             bucketName: "uploads"
-
-//           };
-//           resolve(fileInfo);
-
-
-//         });
-//       });
-//     }
-//   });
-  
-//   const upload = multer({
-//     storage
-//   });
 
 let localsave = {
 
@@ -79,10 +26,10 @@ let localsave = {
  })
 
   router.post('/email',(req,res)=>{
-      console.log(req.body.email)
-    User.findOne({email: req.body.email},function(err, doc){
+      console.log(req.body.Email)
+    Account.findOne({email: req.body.Email},function(err, doc){
         if(!doc){
-            localsave.email = req.body.email
+            localsave.email = req.body.Email
 
     var generate = String(Math.floor(Math.random() * 999999) + 100000);
     if (generate != 6){
@@ -103,7 +50,7 @@ let localsave = {
     
     let mailOptions = {
       from: 'fintech.request@gmail.com', 
-      to: req.body.email, 
+      to: req.body.Email, 
       subject: 'Account Opening Verification Code', 
       text: `Your verification code is ${String(generate)}.`
     
@@ -155,17 +102,17 @@ router.post('/verify',(req,res)=>{
 })
 
 router.post('/info',(req,res)=>{
-    localsave.firstName = req.body.firstName
-    localsave.middleName = req.body.middleName
-    localsave.lastName = req.body.lastName
+    localsave.firstName = req.body.FirstName
+    localsave.middleName = req.body.MiddleName
+    localsave.lastName = req.body.LastName
     console.log(localsave)
     res.send("good")
 })
 
 router.post('/address',(req,res)=>{
-    localsave.phoneNumber = req.body.phoneNumber
-    localsave.address = req.body.address
-    localsave.gender = req.body.gender
+    localsave.phoneNumber = req.body.PhoneNumber
+    localsave.address = req.body.Address
+    localsave.gender = req.body.Gender
     console.log(localsave)
     res.send("good")
 })
@@ -174,31 +121,31 @@ router.post('/address',(req,res)=>{
 
 router.post('/complete',(req,res)=>{
 
-    if (req.body.passport && req.body.signature && req.body.idCard){
-        localsave.passport = req.body.passport
-        localsave.signature = req.body.signature
-        localsave.idCard = req.body.idCard
+    if (req.body.Passport && req.body.Signature && req.body.IdCard){
+        localsave.passport = req.body.Passport
+        localsave.signature = req.body.Signature
+        localsave.idCard = req.body.IdCard
     }
-    else if(req.body.passport && req.body.signature){
-        localsave.passport = req.body.passport
-        localsave.signature = req.body.signature
+    else if(req.body.Passport && req.body.Signature){
+        localsave.passport = req.body.Passport
+        localsave.signature = req.body.Signature
     }
-    else if(req.body.passport && req.body.idCard){
-        localsave.passport = req.body.passport
-        localsave.idCard = req.body.idCard
+    else if(req.body.Passport && req.body.IdCard){
+        localsave.passport = req.body.Passport
+        localsave.idCard = req.body.IdCard
     }
-    else if(req.body.signature && req.body.idCard){
-        localsave.signature = req.body.signature
-        localsave.idCard = req.body.idCard
+    else if(req.body.Signature && req.body.IdCard){
+        localsave.signature = req.body.Signature
+        localsave.idCard = req.body.IdCard
     }
-    else if(req.body.passport){
-        localsave.passport = req.body.passport
+    else if(req.body.Passport){
+        localsave.passport = req.body.Passport
     }
-    else if(req.body.signature){
-        localsave.signature = req.body.signature
+    else if(req.body.Signature){
+        localsave.signature = req.body.Signature
     }
-    else if(req.body.idCard){
-        localsave.idCard = req.body.idCard
+    else if(req.body.IdCard){
+        localsave.idCard = req.body.IdCard
     }
     
      if(localsave.phoneNumber != "" && localsave.address !="" && localsave.gender !="" && localsave.email !="" && localsave.DOB !="" && localsave.firstName !="" && localsave.lastName !="" && localsave.BVN !=""){
@@ -214,7 +161,7 @@ router.post('/complete',(req,res)=>{
         }
         console.log("Good")
 
-        var user = new User();
+        var user = new Account();
         user.accountNumber = accountNumber
         user.password = password
         user.phoneNumber = localsave.phoneNumber
@@ -248,7 +195,7 @@ router.post('/complete',(req,res)=>{
         
      router.post('/congrat',(req,res)=>{
 
-        User.findOne({email: req.body.email},function(err, docs){
+        Account.findOne({email: req.body.Email},function(err, docs){
             if(docs){
                 console.log(docs)
                let transporter = nodemailer.createTransport({
@@ -309,7 +256,7 @@ router.post('/complete',(req,res)=>{
     })   
     
  router.post('/passport',(req,res)=>{
-     const upload = multer({storage}).single('file')
+     const upload = multer({storage}).single('File')
      upload(req, res, function(err){
          if(err){
              return res.send(err)
@@ -351,7 +298,7 @@ router.post('/complete',(req,res)=>{
  })
 
  router.post('/signature',(req,res)=>{
-    const upload = multer({storage}).single('file')
+    const upload = multer({storage}).single('File')
     upload(req, res, function(err){
         if(err){
             return res.send(err)
@@ -394,7 +341,7 @@ router.post('/complete',(req,res)=>{
 
 
 router.post('/idCard',(req,res)=>{
-    const upload = multer({storage}).single('file')
+    const upload = multer({storage}).single('File')
     upload(req, res, function(err){
         if(err){
             return res.send(err)
@@ -437,16 +384,6 @@ router.post('/idCard',(req,res)=>{
 
 
  
-//  router.post('/signature',(req,res)=>{
-//     localsave.signature = req.body.file
-//  })
-
-//  router.post('/idCard',(req,res)=>{
-//     localsave.idCard = req.body.file
-//  })
-
-
-
 
 
 

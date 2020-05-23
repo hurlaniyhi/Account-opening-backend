@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-var userSchema = new mongoose.Schema({
+var acctSchema = new mongoose.Schema({
     email: {
         type: String
     },
@@ -49,4 +49,4 @@ var userSchema = new mongoose.Schema({
 
 
 
-mongoose.model('User',userSchema )
+mongoose.model('Account',acctSchema )
