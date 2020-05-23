@@ -74,7 +74,7 @@ let localsave = {
 
 }
 
- router.get('/',(req,res)=>{
+ router.get('/email',(req,res)=>{
      res.send("server is good")
  })
 
