@@ -7,11 +7,12 @@ const cors = require('cors')
 
 
 const app = express()
-var port = process.env.PORT || 3050
+var port = process.env.PORT || 3001
 
-app.use(cors())
+
 app.use(bodyParser.urlencoded({extended: true})) 
 app.use(bodyParser.json())
+app.use(cors())
 
 app.use('/', handler)
 
