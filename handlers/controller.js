@@ -10,7 +10,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 
 
-mongoose.set('useFindAndModify', false);
+
 const Account = mongoose.model('Account')
 const router = express.Router()
 
@@ -27,9 +27,9 @@ let localsave = {
 
   router.post('/email',(req,res)=>{
       console.log(req.body.Email)
-    Account.findOne({email: req.body.Email},function(err, doc){
+    Account.findOne({Email: req.body.Email},function(err, doc){
         if(!doc){
-            localsave.email = req.body.Email
+            localsave.Email = req.body.Email
 
     var generate = String(Math.floor(Math.random() * 999999) + 100000);
     if (generate != 6){
@@ -92,8 +92,8 @@ let localsave = {
 // })
 
 router.post('/bvn',(req,res)=>{
-    localsave.BVN = req.body.BVN
-    localsave.DOB = req.body.DOB 
+    localsave.Bvn = req.body.Bvn
+    localsave.Dob = req.body.Dob 
     res.send("good")
 })
 
@@ -102,17 +102,17 @@ router.post('/verify',(req,res)=>{
 })
 
 router.post('/info',(req,res)=>{
-    localsave.firstName = req.body.FirstName
-    localsave.middleName = req.body.MiddleName
-    localsave.lastName = req.body.LastName
+    localsave.FirstName = req.body.FirstName
+    localsave.MiddleName = req.body.MiddleName
+    localsave.LastName = req.body.LastName
     console.log(localsave)
     res.send("good")
 })
 
 router.post('/address',(req,res)=>{
-    localsave.phoneNumber = req.body.PhoneNumber
-    localsave.address = req.body.Address
-    localsave.gender = req.body.Gender
+    localsave.PhoneNumber = req.body.PhoneNumber
+    localsave.Address = req.body.Address
+    localsave.Gender = req.body.Gender
     console.log(localsave)
     res.send("good")
 })
@@ -122,33 +122,33 @@ router.post('/address',(req,res)=>{
 router.post('/complete',(req,res)=>{
 
     if (req.body.Passport && req.body.Signature && req.body.IdCard){
-        localsave.passport = req.body.Passport
-        localsave.signature = req.body.Signature
-        localsave.idCard = req.body.IdCard
+        localsave.Passport = req.body.Passport
+        localsave.Signature = req.body.Signature
+        localsave.IdCard = req.body.IdCard
     }
     else if(req.body.Passport && req.body.Signature){
-        localsave.passport = req.body.Passport
-        localsave.signature = req.body.Signature
+        localsave.Passport = req.body.Passport
+        localsave.Signature = req.body.Signature
     }
     else if(req.body.Passport && req.body.IdCard){
-        localsave.passport = req.body.Passport
-        localsave.idCard = req.body.IdCard
+        localsave.Passport = req.body.Passport
+        localsave.IdCard = req.body.IdCard
     }
     else if(req.body.Signature && req.body.IdCard){
-        localsave.signature = req.body.Signature
-        localsave.idCard = req.body.IdCard
+        localsave.Signature = req.body.Signature
+        localsave.IdCard = req.body.IdCard
     }
     else if(req.body.Passport){
-        localsave.passport = req.body.Passport
+        localsave.Passport = req.body.Passport
     }
     else if(req.body.Signature){
-        localsave.signature = req.body.Signature
+        localsave.Signature = req.body.Signature
     }
     else if(req.body.IdCard){
-        localsave.idCard = req.body.IdCard
+        localsave.IdCard = req.body.IdCard
     }
     
-     if(localsave.phoneNumber != "" && localsave.address !="" && localsave.gender !="" && localsave.email !="" && localsave.DOB !="" && localsave.firstName !="" && localsave.lastName !="" && localsave.BVN !=""){
+     if(localsave.PhoneNumber != "" && localsave.Address !="" && localsave.Gender !="" && localsave.Email !="" && localsave.Dob !="" && localsave.FirstName !="" && localsave.LastName !="" && localsave.Bvn !=""){
         console.log(localsave)
         var accountNumber = String(0 + String(Math.floor(Math.random() * 999999999) + 100000000)); 
         var password = String(Math.floor(Math.random() * 999999) + 100000);  
@@ -156,26 +156,26 @@ router.post('/complete',(req,res)=>{
         if(password.length != 6){
             password = password.slice(0,6)
         }
-        if(accountNumber.len != 10){
+        if(accountNumber.length != 10){
             accountNumber = accountNumber.slice(0,10)
         }
         console.log("Good")
 
         var user = new Account();
-        user.accountNumber = accountNumber
-        user.password = password
-        user.phoneNumber = localsave.phoneNumber
-        user.address = localsave.address
-        user.gender = localsave.gender
-        user.email = localsave.email
-        user.BVN = localsave.BVN
-        user.DOB = localsave.DOB
-        user.firstName = localsave.firstName
-        user.middleName = localsave.middleName
-        user.lastName = localsave.lastName
-        user.passport = localsave.passport
-        user.signature = localsave.signature
-        user.idCard = localsave.idCard
+        user.AccountNumber = accountNumber
+        user.Password = password
+        user.PhoneNumber = localsave.PhoneNumber
+        user.Address = localsave.Address
+        user.Gender = localsave.Gender
+        user.Email = localsave.Email
+        user.Bvn = localsave.Bvn
+        user.Dob = localsave.Dob
+        user.FirstName = localsave.FirstName
+        user.MiddleName = localsave.MiddleName
+        user.LastName = localsave.LastName
+        user.Passport = localsave.Passport
+        user.Signature = localsave.Signature
+        user.IdCard = localsave.IdCard
         user.save((err, doc)=>{
             if (!err){
               
@@ -195,7 +195,7 @@ router.post('/complete',(req,res)=>{
         
      router.post('/congrat',(req,res)=>{
 
-        Account.findOne({email: req.body.Email},function(err, docs){
+        Account.findOne({Email: req.body.Email},function(err, docs){
             if(docs){
                 console.log(docs)
                let transporter = nodemailer.createTransport({
@@ -211,9 +211,9 @@ router.post('/complete',(req,res)=>{
                    
                    let mailOptions = {
                      from: 'fintech.request@gmail.com', 
-                     to: docs.email, 
+                     to: docs.Email, 
                      subject: 'Account Opening', 
-                     text: `Congratulations! ${docs.firstName} your account is now open. Your Account Number is  ${docs.accountNumber} and your password for internet banking is ${docs.password}.`
+                     text: `Congratulations! ${docs.FirstName} your account is now open. Your Account Number is  ${docs.AccountNumber} and your password for internet banking is ${docs.Password}.`
                    
                    };
                  
@@ -230,11 +230,11 @@ router.post('/complete',(req,res)=>{
                    })
                    res.json({
                     "comment": "good",
-                    "accountNumber": docs.accountNumber,
-                    "password": docs.password,
-                    "passport": docs.passport,
-                    "firstName": docs.firstName,
-                    "email": docs.email
+                    "accountNumber": docs.AccountNumber,
+                    "password": docs.Password,
+                    "passport": docs.Passport,
+                    "firstName": docs.FirstName,
+                    "email": docs.Email
          
                 })
                 }
@@ -287,7 +287,7 @@ router.post('/complete',(req,res)=>{
                  const fs = require('fs')
                  fs.unlinkSync(path)
                  console.log(image)
-                localsave.passport = image.secure_url
+                localsave.Passport = image.secure_url
 
              }
          )
@@ -329,7 +329,7 @@ router.post('/complete',(req,res)=>{
                 const fs = require('fs')
                 fs.unlinkSync(path)
                 console.log(image)
-               localsave.signature = image.secure_url
+               localsave.Signature = image.secure_url
 
             }
         )
@@ -372,7 +372,7 @@ router.post('/idCard',(req,res)=>{
                 const fs = require('fs')
                 fs.unlinkSync(path)
                 console.log(image)
-               localsave.idCard = image.secure_url
+               localsave.IdCard = image.secure_url
 
             }
         )

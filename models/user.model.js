@@ -1,46 +1,46 @@
 const mongoose = require('mongoose')
 
 var acctSchema = new mongoose.Schema({
-    email: {
+    Email: {
         type: String
     },
-    BVN: {
+    Bvn: {
         type: String
     },
-    DOB: {
+    Dob: {
         type: String
     },
-    firstName: {
+    FirstName: {
         type: String
     },
-    middleName: {
+    MiddleName: {
         type: String
     },
-    lastName: {
+    LastName: {
         type: String
     },
-    phoneNumber: {
+    PhoneNumber: {
         type: Number
     },
-    address: {
+    Address: {
         type: String
     },
-    gender: {
+    Gender: {
         type: String
     },
-    passport: {
+    Passport: {
         type: String
     },
-    signature: {
+    Signature: {
         type: String
     },
-    idCard: {
+    IdCard: {
         type: String
     },
-    accountNumber: {
+    AccountNumber: {
         type: String
     },
-    password: {
+    Password: {
         type: String
     }
     
