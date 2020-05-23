@@ -3,12 +3,13 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const handler = require('./handlers/controller.js')
+const cors = require('cors')
 
 
 const app = express()
 var port = process.env.PORT || 3050
 
-
+app.use(cors())
 app.use(bodyParser.urlencoded({extended: true})) 
 app.use(bodyParser.json())
 
