@@ -1,11 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const nodemailer = require('nodemailer')
-const crypto = require("crypto")
+// const crypto = require("crypto")
 const multer = require('multer')
 const path = require("path")
 
-const GridFsStorage = require("multer-gridfs-storage")
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 
@@ -15,11 +15,7 @@ const Account = mongoose.model('Account')
 const router = express.Router()
 
 
-var minisave = []
 
-let localsave = {
-
-}
 
  router.get('/email',(req,res)=>{
      res.send("server is good")
@@ -29,7 +25,7 @@ let localsave = {
       console.log(req.body.Email)
     Account.findOne({Email: req.body.Email},function(err, doc){
         if(!doc){
-            localsave.Email = req.body.Email
+            
 
     var generate = String(Math.floor(Math.random() * 999999) + 100000);
     if (generate != 6){
@@ -87,69 +83,15 @@ let localsave = {
   })
 
 
-//   router.post("/upload", upload.single("passport"),(req,res)=>{
-//     res.redirect('/')
-// })
 
-router.post('/bvn',(req,res)=>{
-    localsave.Bvn = req.body.Bvn
-    localsave.Dob = req.body.Dob 
-    res.send("good")
-})
-
-router.post('/verify',(req,res)=>{
-    res.send("good")
-})
-
-router.post('/info',(req,res)=>{
-    localsave.FirstName = req.body.FirstName
-    localsave.MiddleName = req.body.MiddleName
-    localsave.LastName = req.body.LastName
-    console.log(localsave)
-    res.send("good")
-})
-
-router.post('/address',(req,res)=>{
-    localsave.PhoneNumber = req.body.PhoneNumber
-    localsave.Address = req.body.Address
-    localsave.Gender = req.body.Gender
-    console.log(localsave)
-    res.send("good")
-})
 
 
 
 router.post('/complete',(req,res)=>{
 
-    if (req.body.Passport && req.body.Signature && req.body.IdCard){
-        localsave.Passport = req.body.Passport
-        localsave.Signature = req.body.Signature
-        localsave.IdCard = req.body.IdCard
-    }
-    else if(req.body.Passport && req.body.Signature){
-        localsave.Passport = req.body.Passport
-        localsave.Signature = req.body.Signature
-    }
-    else if(req.body.Passport && req.body.IdCard){
-        localsave.Passport = req.body.Passport
-        localsave.IdCard = req.body.IdCard
-    }
-    else if(req.body.Signature && req.body.IdCard){
-        localsave.Signature = req.body.Signature
-        localsave.IdCard = req.body.IdCard
-    }
-    else if(req.body.Passport){
-        localsave.Passport = req.body.Passport
-    }
-    else if(req.body.Signature){
-        localsave.Signature = req.body.Signature
-    }
-    else if(req.body.IdCard){
-        localsave.IdCard = req.body.IdCard
-    }
     
-     if(localsave.PhoneNumber != "" && localsave.Address !="" && localsave.Gender !="" && localsave.Email !="" && localsave.Dob !="" && localsave.FirstName !="" && localsave.LastName !="" && localsave.Bvn !=""){
-        console.log(localsave)
+     if(req.body.PhoneNumber != "" && req.body.Address !="" && req.body.Gender !="" && req.body.Email !="" && req.body.Dob !="" && req.body.FirstName !="" && req.body.LastName !="" && req.body.Bvn !=""){
+        
         var accountNumber = String(0 + String(Math.floor(Math.random() * 999999999) + 100000000)); 
         var password = String(Math.floor(Math.random() * 999999) + 100000);  
         
@@ -164,21 +106,21 @@ router.post('/complete',(req,res)=>{
         var user = new Account();
         user.AccountNumber = accountNumber
         user.Password = password
-        user.PhoneNumber = localsave.PhoneNumber
-        user.Address = localsave.Address
-        user.Gender = localsave.Gender
-        user.Email = localsave.Email
-        user.Bvn = localsave.Bvn
-        user.Dob = localsave.Dob
-        user.FirstName = localsave.FirstName
-        user.MiddleName = localsave.MiddleName
-        user.LastName = localsave.LastName
-        user.Passport = localsave.Passport
-        user.Signature = localsave.Signature
-        user.IdCard = localsave.IdCard
+        user.PhoneNumber = req.body.PhoneNumber
+        user.Address = req.body.Address
+        user.Gender = req.body.Gender
+        user.Email = req.body.Email
+        user.Bvn = req.body.Bvn
+        user.Dob = req.body.Dob
+        user.FirstName = req.body.FirstName
+        user.MiddleName = req.body.MiddleName
+        user.LastName = req.body.LastName
+        user.Passport = req.body.Passport
+        user.Signature = req.body.Signature
+        user.IdCard = req.body.IdCard
         user.save((err, doc)=>{
             if (!err){
-              
+             console.log(doc) 
              res.send("good")
             
             }
@@ -287,7 +229,8 @@ router.post('/complete',(req,res)=>{
                  const fs = require('fs')
                  fs.unlinkSync(path)
                  console.log(image)
-                localsave.Passport = image.secure_url
+
+               res.send(image.secure_url)
 
              }
          )
@@ -329,7 +272,7 @@ router.post('/complete',(req,res)=>{
                 const fs = require('fs')
                 fs.unlinkSync(path)
                 console.log(image)
-               localsave.Signature = image.secure_url
+               res.send(image.secure_url)
 
             }
         )
@@ -372,7 +315,7 @@ router.post('/idCard',(req,res)=>{
                 const fs = require('fs')
                 fs.unlinkSync(path)
                 console.log(image)
-               localsave.IdCard = image.secure_url
+               res.send(image.secure_url)
 
             }
         )
